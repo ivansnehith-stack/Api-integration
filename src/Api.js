@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 
 const Api = () => {
   const [input, setInput] = useState("");
   const url = `https://maps.google.com/maps/api/geocode/json?address=${input}&key=AIzaSyBh12bthPAPsuUTJ06VDL3xRlQaXgww9nU&sensor=false`;
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
 
   const getData = async () => {
     const response = await fetch(url);
     const result = await response.json();
+    console.log(result.results);
     setData(result.results[0]?.address_components);
   };
 
   useEffect(() => {
     getData();
   }, []);
-
+  console.log(data);
   return (
     <div>
       <input
@@ -26,24 +26,26 @@ const Api = () => {
       />
       <button onClick={() => getData()}>Get Data</button>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Pincode</th>
-            <th>village</th>
-            <th>District</th>
-            <th>State</th>
-            <th>Country</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {data?.map((item) => (
-              <td>{item.long_name}</td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
+      {data && (
+        <table>
+          <thead>
+            <tr>
+              <th>Pincode</th>
+              <th>village</th>
+              <th>District</th>
+              <th>State</th>
+              <th>Country</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {data?.map((item, index) => (
+                <td key={index}>{item.long_name}</td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
