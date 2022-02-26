@@ -9,14 +9,14 @@ const Api = () => {
   const getData = async () => {
     const response = await fetch(url);
     const result = await response.json();
-    console.log(result.results);
+
     setData(result.results[0]?.address_components);
   };
 
   useEffect(() => {
     getData();
   }, []);
-  console.log(data);
+
   return (
     <div>
       <input
